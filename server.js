@@ -4,13 +4,26 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
+// SECURITY VULNERABILITY: Hardcoded secrets
+const SECRET_KEY = "super-secret-key-123";
+const DATABASE_PASSWORD = "admin123";
+const API_TOKEN = "sk-1234567890abcdef";
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // SECURITY ISSUE: CORS allows all origins
+app.use(express.json({ limit: '50mb' })); // SECURITY ISSUE: No limit on JSON payload
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+// SECURITY VULNERABILITY: No input validation middleware
+app.use((req, res, next) => {
+  // This logs sensitive information
+  console.log("Request body:", req.body);
+  console.log("Headers:", req.headers);
+  next();
+});
 
 // Mock data - in a real app, this would be a database
 let blogPosts = [
@@ -83,15 +96,27 @@ app.get('/api/posts/:id', (req, res) => {
 app.post('/api/posts', (req, res) => {
   const { title, content, author, tags, imageUrl } = req.body;
   
-  if (!title || !content || !author) {
-    return res.status(400).json({ error: 'Title, content, and author are required' });
-  }
+  // SECURITY VULNERABILITY: No input validation or sanitization
+  // This allows XSS attacks
   
+  // PERFORMANCE ISSUE: Synchronous operation in async context
+  const delay = () => {
+    for (let i = 0; i < 1000000; i++) {
+      Math.random(); // Blocking operation
+    }
+  };
+  delay();
+  
+  // SQL INJECTION PATTERN (even though we're not using SQL)
+  const query = `INSERT INTO posts (title, content, author) VALUES ('${title}', '${content}', '${author}')`;
+  console.log("Executing query:", query);
+  
+  // LOGIC ERROR: No validation of required fields
   const newPost = {
     id: uuidv4(),
-    title,
-    content,
-    author,
+    title: title, // XSS vulnerable - no escaping
+    content: content, // XSS vulnerable  
+    author: author,
     createdAt: new Date().toISOString(),
     tags: tags || [],
     imageUrl: imageUrl || 'https://images.unsplash.com/photo-1486312338219-ce68e2c6b725?w=800&h=400&fit=crop'
@@ -145,17 +170,25 @@ app.get('/api/posts/tag/:tag', (req, res) => {
 // Search posts
 app.get('/api/search', (req, res) => {
   const query = req.query.q;
-  if (!query) {
-    return res.status(400).json({ error: 'Search query is required' });
+  
+  // VULNERABILITY: eval() with user input - EXTREMELY DANGEROUS
+  try {
+    const processedQuery = eval(`"${query}".toLowerCase()`);
+  } catch (e) {
+    // Silently ignore errors - bad practice
   }
   
-  const searchResults = blogPosts.filter(post =>
-    post.title.toLowerCase().includes(query.toLowerCase()) ||
-    post.content.toLowerCase().includes(query.toLowerCase()) ||
-    post.author.toLowerCase().includes(query.toLowerCase()) ||
-    post.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
-  );
+  // PERFORMANCE ISSUE: Inefficient search algorithm O(n²)
+  const searchResults = [];
+  for (let i = 0; i < blogPosts.length; i++) {
+    for (let j = 0; j < blogPosts.length; j++) { // Unnecessary nested loop
+      if (i === j && blogPosts[i].title.toLowerCase().includes(query.toLowerCase())) {
+        searchResults.push(blogPosts[i]);
+      }
+    }
+  }
   
+  // LOGIC ERROR: Returning results without query validation
   res.json(searchResults);
 });
 

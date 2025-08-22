@@ -1,0 +1,111 @@
+/* BAD CSS PRACTICES */
+
+/* PERFORMANCE ISSUE: Universal selector */
+* {
+  transition: all 0.3s ease !important; /* Overuse of !important */
+  box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Applied to everything */
+}
+
+/* ACCESSIBILITY ISSUE: Removing focus indicators */
+*:focus {
+  outline: none !important;
+}
+
+/* BAD PRACTICE: Overly specific selectors */
+body div.container div.content div.post div.title h1.main-title {
+  color: red;
+}
+
+/* PERFORMANCE ISSUE: Complex selectors */
+div > div > div > div > div > span {
+  font-size: 12px;
+}
+
+/* BAD PRACTICE: Hardcoded values everywhere */
+.header {
+  height: 73px; /* Magic number */
+  width: 1247px; /* Fixed width */
+  margin-left: 23px; /* Random margins */
+  padding: 7px 13px 11px 19px; /* Inconsistent spacing */
+}
+
+/* MAINTAINABILITY ISSUE: Repetitive code */
+.button-red {
+  background: red;
+  border: 1px solid red;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.button-blue {
+  background: blue;
+  border: 1px solid blue;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.button-green {
+  background: green;
+  border: 1px solid green;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* ACCESSIBILITY ISSUE: Poor color contrast */
+.low-contrast {
+  background: #f0f0f0;
+  color: #f5f5f5; /* Nearly impossible to read */
+}
+
+/* RESPONSIVE ISSUE: Fixed pixel values */
+.mobile-menu {
+  width: 320px; /* Assumes specific device width */
+  height: 100vh;
+}
+
+/* PERFORMANCE ISSUE: Expensive properties */
+.animated-element {
+  filter: blur(5px) brightness(1.2) contrast(1.5) saturate(2);
+  transform: rotate(45deg) scale(1.5) skew(30deg, 20deg);
+  animation: spin 0.1s infinite linear; /* Too frequent animation */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) scale(1) skew(0deg); }
+  100% { transform: rotate(360deg) scale(2) skew(180deg); }
+}
+
+/* BAD PRACTICE: z-index wars */
+.modal {
+  z-index: 9999999;
+}
+
+.dropdown {
+  z-index: 99999999;
+}
+
+.tooltip {
+  z-index: 999999999;
+}
+
+/* SYNTAX ERROR: Invalid CSS */
+.broken-css {
+  color: #invalid-color;
+  margin: 10px 20px 30px; /* Missing fourth value */
+  border: 2px solid; /* Missing color */
+  background: url('missing-image.jpg') no-repeat center/; /* Invalid syntax */
+}
+
+/* PERFORMANCE ISSUE: Importing multiple fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* MAINTAINABILITY ISSUE: Inline styles in CSS (wrong approach) */
+.inline-styles-in-css {
+  /* This should be handled in JS/React, not CSS */
+  content: "User name: " attr(data-username) " | Status: " attr(data-status);
+}
