@@ -1,0 +1,270 @@
+.create-post {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2rem 0;
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.create-post-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.create-post-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.create-post-header p {
+  font-size: 1.1rem;
+  color: #718096;
+}
+
+.create-post-form {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  min-height: 600px;
+}
+
+.form-main {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-sidebar {
+  background: #f8fafc;
+  border-left: 1px solid #e2e8f0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sidebar-section h3 {
+  color: #2d3748;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.form-input, .form-textarea {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-textarea {
+  min-height: 300px;
+  line-height: 1.6;
+}
+
+.character-count {
+  font-size: 0.85rem;
+  color: #718096;
+  text-align: right;
+  margin-top: -0.25rem;
+}
+
+.form-help {
+  font-size: 0.85rem;
+  color: #718096;
+  font-style: italic;
+}
+
+.tags-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0.75rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.tags-preview .tag {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.no-tags {
+  color: #a0aec0;
+  font-style: italic;
+  font-size: 0.9rem;
+  align-self: center;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  gap: 1rem;
+}
+
+.form-actions .btn {
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-sidebar {
+    border-left: none;
+    border-top: 1px solid #e2e8f0;
+  }
+}
+
+@media (max-width: 768px) {
+  .create-post {
+    padding: 1rem 0;
+  }
+
+  .create-post-header {
+    margin-bottom: 2rem;
+  }
+
+  .create-post-header h1 {
+    font-size: 2rem;
+  }
+
+  .form-main, .form-sidebar {
+    padding: 1.5rem;
+  }
+
+  .form-actions {
+    padding: 1.5rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions .btn {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-post-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .form-main, .form-sidebar, .form-actions {
+    padding: 1rem;
+  }
+
+  .form-textarea {
+    min-height: 250px;
+  }
+
+  .sidebar-section {
+    gap: 1rem;
+  }
+
+  .tags-preview {
+    min-height: 35px;
+    padding: 0.5rem;
+  }
+
+  .form-actions .btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animation improvements */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form validation styles */
+.form-input:invalid:not(:placeholder-shown) {
+  border-color: #e53e3e;
+}
+
+.form-input:valid:not(:placeholder-shown) {
+  border-color: #38a169;
+}
+
+.form-textarea:invalid:not(:placeholder-shown) {
+  border-color: #e53e3e;
+}
+
+.form-textarea:valid:not(:placeholder-shown) {
+  border-color: #38a169;
+}
