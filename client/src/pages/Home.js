@@ -1,12 +1,44 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { usePosts } from '../hooks/usePosts';
-import BlogCard from '../components/BlogCard';
-import Hero from '../components/Hero';
-import './Home.css';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { usePosts } from '../hooks/usePosts'
+import BlogCard from '../components/BlogCard'
+import Hero from '../components/Hero'
+import './Home.css'
 
 const Home = () => {
-  const { posts, loading, error } = usePosts();
+  const { posts, loading, error } = usePosts()
+  
+  // REACT ANTI-PATTERN: Unnecessary state that causes re-renders
+  const [renderCount, setRenderCount] = useState(0)
+  const [randomValue, setRandomValue] = useState(Math.random())
+  
+  // PERFORMANCE ISSUE: Running on every render
+  const expensiveCalculation = () => {
+    let result = 0
+    for (let i = 0; i < 100000; i++) {
+      result += Math.random()
+    }
+    return result
+  }
+  
+  const calculatedValue = expensiveCalculation() // Should be memoized
+  
+  // REACT ANTI-PATTERN: useEffect without dependencies causing infinite loop
+  useEffect(() => {
+    setRenderCount(renderCount + 1)
+    setRandomValue(Math.random())
+  })
+  
+  // PERFORMANCE ISSUE: Creating new functions on every render
+  const handleClick = () => {
+    console.log("Clicked")
+  }
+  
+  // BAD PRACTICE: Accessing DOM directly
+  const homeElement = document.querySelector('.home')
+  if (homeElement) {
+    homeElement.style.backgroundColor = randomValue > 0.5 ? 'red' : 'blue'
+  }
 
   if (error) {
     return (
@@ -16,7 +48,7 @@ const Home = () => {
           {error}
         </div>
       </div>
-    );
+    )
   }
 
   return (
